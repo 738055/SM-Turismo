@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus, ShoppingCart, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { Product, CartItemSelection } from '@/lib/types';
 import { useRouter } from 'next/navigation';
@@ -189,54 +189,61 @@ export default function ProductDetailContent({ product }: { product: Product }) 
 
           {/* Coluna Direita: Sticky Checkout Widget */}
           <aside className="lg:col-span-1">
-             <div className="sticky top-28 bg-white border-2 border-dark-900 rounded-none p-6 overflow-hidden">
-                <div className="mb-6 border-b border-gray-100 pb-4">
-                   <p className="text-gray-500 text-sm mb-1">{t('from')}</p>
-                   {product.promo_price ? (
-                      <div>
-                         <span className="text-gray-400 line-through text-sm">R$ {product.price.toFixed(2)}</span>
-                         <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-extrabold text-brand-600">R$ {product.promo_price.toFixed(2)}</span>
-                            <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded text-xs">OFERTA</span>
-                         </div>
+             <div className="sticky top-28 bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100">
+                
+                {/* Price Section */}
+                <div className="mb-6 pb-6 border-b border-gray-100">
+                  {product.promo_price ? (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-400 line-through text-xl">R$ {product.price.toFixed(2).replace('.',',')}</span>
+                        <span className="bg-brand-50 text-brand-600 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                          <Star size={12}/> OFERTA
+                        </span>
                       </div>
-                   ) : (
-                      <span className="text-4xl font-extrabold text-brand-600">R$ {product.price.toFixed(2)}</span>
-                   )}
+                      <p className="text-5xl font-extrabold text-dark-900 mt-1">R$ {product.promo_price.toFixed(2).replace('.',',')}</p>
+                    </>
+                  ) : (
+                    <p className="text-5xl font-extrabold text-dark-900">R$ {product.price.toFixed(2).replace('.',',')}</p>
+                  )}
+                   <p className="text-sm text-gray-500 mt-1">por pessoa</p>
                 </div>
 
-                {/* SELETOR DE DATA */}
+                {/* Date Selector */}
                 <div className="mb-6">
-                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">Escolha a data:</h3>
-                  <input 
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                  />
+                  <label className="block text-sm font-bold text-dark-900 mb-2">Escolha a data do passeio</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input 
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all appearance-none"
+                    />
+                  </div>
                 </div>
 
-                {/* SELETOR DE QUANTIDADE (ADULTO / CRIANÇA) */}
-                <div className="space-y-4 mb-6">
-                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">Selecione os ingressos:</h3>
+                {/* Ticket Selector */}
+                <div className="space-y-2 mb-6">
+                  <label className="block text-sm font-bold text-dark-900 mb-2">Selecione os ingressos</label>
                   {selections.map((variant, idx) => (
-                    <div key={idx} className="flex items-center justify-between">
+                    <div key={idx} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg">
                       <div>
-                        <p className="font-bold text-sm text-dark-900">{variant.label}</p>
-                        <p className="text-xs text-gray-500">R$ {variant.price.toFixed(2)}</p>
+                        <p className="font-bold text-dark-900">{variant.label}</p>
+                        <p className="text-sm text-gray-500">R$ {variant.price.toFixed(2).replace('.',',')}</p>
                       </div>
-                      <div className="flex items-center gap-3 bg-gray-50 rounded-none p-1 border border-gray-200">
+                      <div className="flex items-center gap-2">
                         <button 
                           onClick={() => updateQuantity(idx, -1)} 
-                          className={`w-8 h-8 flex items-center justify-center rounded-none bg-white shadow-sm transition-colors ${variant.quantity <= 0 ? 'text-gray-300' : 'text-brand-600 hover:bg-gray-50'}`}
+                          className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-dark-900 hover:bg-brand-50 hover:text-brand-600 transition-colors disabled:opacity-50"
                           disabled={variant.quantity <= 0}
                         >
                           <Minus size={16} />
                         </button>
-                        <span className="w-4 text-center font-bold text-dark-900">{variant.quantity}</span>
+                        <span className="w-6 text-center font-bold text-dark-900 text-lg">{variant.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(idx, 1)} 
-                          className="w-8 h-8 flex items-center justify-center rounded-none bg-white shadow-sm text-brand-600 hover:bg-gray-50"
+                          className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 text-dark-900 hover:bg-brand-50 hover:text-brand-600 transition-colors"
                         >
                           <Plus size={16} />
                         </button>
@@ -245,18 +252,22 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                   ))}
                 </div>
 
-                {/* Resumo do Total */}
-                <div className="bg-brand-50 p-4 rounded-none mb-6 flex justify-between items-center">
-                  <span className="text-sm font-bold text-brand-900">Total Previsto:</span>
-                  <span className="text-xl font-extrabold text-brand-600">R$ {currentTotal.toFixed(2)}</span>
-                </div>
+                {/* Total Summary */}
+                {hasItemsSelected && (
+                  <div className="border-t-2 border-dashed border-gray-200 mt-6 pt-6">
+                    <div className="flex justify-between items-center text-dark-900">
+                      <span className="text-lg font-bold">Total</span>
+                      <span className="text-3xl font-extrabold text-brand-600">R$ {currentTotal.toFixed(2).replace('.',',')}</span>
+                    </div>
+                  </div>
+                )}
 
-                {/* Botão de Ação */}
-                <div className="space-y-3">
+                {/* CTA Button */}
+                <div className="mt-6">
                   <button 
                     onClick={handleAddToCart}
                     disabled={!hasItemsSelected}
-                    className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-dark-900 font-bold py-4 rounded-none text-lg uppercase tracking-wide transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-brand-500 text-white font-bold py-4 px-6 rounded-xl text-lg uppercase tracking-wide transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:bg-brand-600 disabled:bg-gray-300 disabled:opacity-80 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-2"
                   >
                     <ShoppingCart size={20} />
                     Adicionar ao Carrinho

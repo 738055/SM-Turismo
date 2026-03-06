@@ -95,6 +95,13 @@ export default function AdminProducts() {
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     // Remove tudo que não é dígito
     const rawValue = e.target.value.replace(/\D/g, '');
+    
+    // Se o usuário apagar tudo, permite que o valor fique vazio
+    if (rawValue === '') {
+      setForm({ ...form, price: '' as any });
+      return;
+    }
+
     // Converte para float (centavos)
     const floatValue = Number(rawValue) / 100;
     setForm({ ...form, price: floatValue });
@@ -273,9 +280,39 @@ export default function AdminProducts() {
                       <button onClick={() => setForm({...form, pricing_tiers: [...(form.pricing_tiers||[]), {min_pax:1, max_pax:4, price:0}]})} className="text-sm bg-brand-600 text-white px-2 py-1 rounded">Add Faixa</button>
                       {form.pricing_tiers?.map((t, i) => (
                          <div key={i} className="flex gap-2 mt-2 items-center">
-                            De <input type="number" className="border w-16" value={t.min_pax} onChange={e => { const nt = [...(form.pricing_tiers||[])]; nt[i].min_pax=Number(e.target.value); setForm({...form, pricing_tiers:nt}) }} />
-                            a <input type="number" className="border w-16" value={t.max_pax} onChange={e => { const nt = [...(form.pricing_tiers||[])]; nt[i].max_pax=Number(e.target.value); setForm({...form, pricing_tiers:nt}) }} />
-                            R$ <input type="number" className="border w-24" value={t.price} onChange={e => { const nt = [...(form.pricing_tiers||[])]; nt[i].price=Number(e.target.value); setForm({...form, pricing_tiers:nt}) }} />
+                            De <input 
+                               type="number" 
+                               className="border w-16 p-1 rounded" 
+                               value={t.min_pax} 
+                               onChange={e => { 
+                                  const val = e.target.value;
+                                  const nt = [...(form.pricing_tiers||[])]; 
+                                  nt[i].min_pax = val === '' ? '' as any : Number(val); 
+                                  setForm({...form, pricing_tiers:nt}) 
+                               }} 
+                            />
+                            a <input 
+                               type="number" 
+                               className="border w-16 p-1 rounded" 
+                               value={t.max_pax} 
+                               onChange={e => { 
+                                  const val = e.target.value;
+                                  const nt = [...(form.pricing_tiers||[])]; 
+                                  nt[i].max_pax = val === '' ? '' as any : Number(val); 
+                                  setForm({...form, pricing_tiers:nt}) 
+                               }} 
+                            />
+                            R$ <input 
+                               type="number" 
+                               className="border w-24 p-1 rounded" 
+                               value={t.price} 
+                               onChange={e => { 
+                                  const val = e.target.value;
+                                  const nt = [...(form.pricing_tiers||[])]; 
+                                  nt[i].price = val === '' ? '' as any : Number(val); 
+                                  setForm({...form, pricing_tiers:nt}) 
+                               }} 
+                            />
                             <button onClick={() => setForm({...form, pricing_tiers: form.pricing_tiers?.filter((_, idx) => idx !== i)})} className="text-red-500"><X size={16}/></button>
                          </div>
                       ))}

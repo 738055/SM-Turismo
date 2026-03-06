@@ -10,9 +10,16 @@ type Props = {
 
 // Gera metadados dinâmicos para SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data: product } = await supabase.from('products').select('*').eq('id', params.id).single();
+  const { data: product, error } = await supabase.from('products').select('*').eq('id', params.id).single();
  
-  if (!product) return { title: 'Produto não encontrado' };
+  if (error) {
+    console.log('Erro no Supabase (generateMetadata):', error);
+  }
+
+  if (!product) {
+    console.log('Produto não encontrado para o ID (generateMetadata):', params.id);
+    return { title: 'Produto não encontrado' };
+  }
  
   return {
     title: product.title,
@@ -26,9 +33,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const { data: product } = await supabase.from('products').select('*').eq('id', params.id).single();
+  const { data: product, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', params.id)
+    .single();
   
+  if (error) {
+    console.log('Erro no Supabase:', error);
+  }
+
   if (!product) {
+    console.log('Produto não encontrado para o ID:', params.id);
     notFound();
   }
 

@@ -10,7 +10,8 @@ import {
   Briefcase, Star, ShoppingBag, Plane, LucideIcon 
 } from 'lucide-react';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const ICON_COMPONENTS: Record<string, LucideIcon> = {
   'Ticket': Ticket, 'Bus': Bus, 'Utensils': Utensils, 'ShoppingBag': ShoppingBag,

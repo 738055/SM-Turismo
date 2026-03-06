@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Search, Frown, Compass, Map } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const CITIES = ['Todos', 'Foz do Iguaçu - BR', 'Ciudad del Este - PY', 'Puerto Iguazu - AR'];
 

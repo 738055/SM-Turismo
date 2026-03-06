@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus } from 'lucide-react';
+import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { Product } from '@/lib/types';
+import { Product, CartItemSelection } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
 export default function ProductDetailContent({ product }: { product: Product }) {
   const { t } = useLanguage();
+  const { addToCart } = useCart();
   const router = useRouter();
   
   const [activePhoto, setActivePhoto] = useState(0);
@@ -16,7 +18,6 @@ export default function ProductDetailContent({ product }: { product: Product }) 
   const [selectedDate, setSelectedDate] = useState('');
 
   // Estado para gerenciar quantidades das variantes
-  // Se não tiver variantes no banco, cria uma "Padrão" usando o preço base
   const defaultVariants = product.price_variants && product.price_variants.length > 0 
     ? product.price_variants.map(v => ({ ...v, quantity: 0 }))
     : [{ label: 'Adulto / Unidade', price: product.promo_price || product.price, quantity: 0 }];
@@ -33,41 +34,27 @@ export default function ProductDetailContent({ product }: { product: Product }) 
     });
   };
 
-  // Calcula total atual da seleção
   const currentTotal = selections.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
   const hasItemsSelected = selections.some(s => s.quantity > 0);
 
-  const handleWhatsAppDirect = () => {
+  const handleAddToCart = () => {
     if (!selectedDate) {
       alert('Por favor, escolha a data do passeio.');
       return;
     }
 
     if (!hasItemsSelected) {
-        alert('Por favor, selecione ao menos um ingresso.');
-        return;
+      alert('Por favor, selecione ao menos um ingresso.');
+      return;
     }
 
-    const formattedDate = new Date(selectedDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-
-    const details = selections
+    const finalSelections: CartItemSelection[] = selections
       .filter(s => s.quantity > 0)
-      .map(s => `- ${s.quantity}x ${s.label} (R$ ${s.price.toFixed(2).replace('.', ',')})`)
-      .join('\n');
+      .map(s => ({ label: s.label, price: s.price, quantity: s.quantity }));
 
-    const formattedTotal = currentTotal.toFixed(2).replace('.', ',');
-
-    const message = `Olá, Foz Turismo SM! Gostaria de solicitar uma reserva.
-Passeio: ${product.title}
-Data Escolhida: ${formattedDate}
-Detalhes:
-${details}
-Valor Total Previsto: R$ ${formattedTotal}`;
-
-    const whatsappUrl = `https://wa.me/5545999999999?text=${encodeURIComponent(message)}`;
+    addToCart(product, finalSelections, selectedDate);
     
-    // Abrir em nova aba
-    window.open(whatsappUrl, '_blank');
+    router.push('/cart');
   };
 
   // --- SEO: SCHEMA.ORG JSON-LD ---
@@ -267,16 +254,13 @@ Valor Total Previsto: R$ ${formattedTotal}`;
                 {/* Botão de Ação */}
                 <div className="space-y-3">
                   <button 
-                    onClick={handleWhatsAppDirect}
+                    onClick={handleAddToCart}
                     disabled={!hasItemsSelected}
                     className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-dark-900 font-bold py-4 rounded-none text-lg uppercase tracking-wide transition-all flex items-center justify-center gap-2"
                   >
-                    Reservar via WhatsApp
+                    <ShoppingCart size={20} />
+                    Adicionar ao Carrinho
                   </button>
-                </div>
-
-                <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
-                   <ShieldCheck size={14} className="text-green-500" /> Compra 100% Segura via WhatsApp
                 </div>
              </div>
           </aside>

@@ -11,7 +11,7 @@ export default function SearchHero() {
     <section className="relative h-screen flex items-center justify-center bg-dark-900">
         <div className="absolute inset-0 overflow-hidden">
           <video autoPlay loop muted playsInline poster="https://narpgktjriwmtubkijdw.supabase.co/storage/v1/object/public/easyvan-media/por-do-sol-nas-cataratas.jpeg" className="w-full h-full object-cover opacity-50">
-            <source src="https://narpgktjriwmtubkijdw.supabase.co/storage/v1/object/public/easyvan-media/YTDown.com_YouTube_Media_Ri5xkVdfUrM_001_1080p.mp4" type="video/mp4" />
+            <source src="https://kperhxhlwbgjvfatlcpe.supabase.co/storage/v1/object/public/easyvan-media/cataratas-aera.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-90"></div>
         </div>

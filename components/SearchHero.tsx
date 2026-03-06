@@ -19,7 +19,7 @@ export default function SearchHero() {
         <div className="relative z-10 w-full max-w-[1200px] px-4 pt-16">
           <div className="text-center mb-10 text-white animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-md">
-              Viva o extraordinário em <br/> <span className="text-brand-400">Foz do Iguaçu</span>
+              Conheça Foz do Iguaçu com a <br/> <span className="text-brand-400">Foz Turismo SM</span>
             </h1>
             <p className="text-lg md:text-xl font-medium text-gray-200">
               Passeios, transportes e experiências inesquecíveis na Tríplice Fronteira.

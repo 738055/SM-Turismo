@@ -13,20 +13,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const installmentValue = (product.price / 10).toFixed(2);
 
   return (
-    <div className="group flex flex-col h-full bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100">
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
-        {/* CORREÇÃO AQUI: image_url */}
+    <div className="group flex flex-col h-full bg-white rounded-sm overflow-hidden transition-all duration-300">
+      <div className="relative aspect-[4/5] w-full overflow-hidden">
         <img 
           src={product.image_url} 
           alt={product.title} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
         />
         <div className="absolute top-3 left-3 z-10">
-          <span className="bg-brand-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+          <span className="bg-brand-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
             {product.category}
           </span>
         </div>
-        {/* Usando is_featured como destaque, se necessário */}
         {product.is_featured && (
            <div className="absolute bottom-0 left-0 w-full bg-brand-600 text-white text-xs font-bold py-1 px-3 text-center">
              DESTAQUE
@@ -48,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
            )}
         </div>
 
-        <h3 className="text-gray-800 font-bold text-md leading-snug mb-2 line-clamp-2 min-h-[44px]">
+        <h3 className="text-xl font-extrabold text-dark-900 leading-snug mb-2 line-clamp-2">
           <Link href={`/product/${product.id}`} className="hover:text-brand-600 transition-colors">
             {product.title}
           </Link>
@@ -70,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
            
            <Link 
             href={`/product/${product.id}`}
-            className="block w-full text-center bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3 rounded uppercase tracking-wide transition-colors"
+            className="block w-full text-center bg-brand-500 hover:bg-brand-600 text-dark-900 font-bold text-sm py-3 rounded-none uppercase tracking-wide transition-colors mt-4"
            >
             Comprar Agora
            </Link>

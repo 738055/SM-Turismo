@@ -11,16 +11,16 @@ export default function HomeFleet({ fleet }: { fleet: FleetItem[] }) {
   if (fleet.length === 0) return null;
 
   return (
-    <section className="py-10 bg-dark-900 text-white relative overflow-hidden">
+    <section className="py-20 bg-dark-900 text-white relative overflow-hidden">
        {/* Background sutil */}
        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-dark-900 to-dark-800 opacity-50 z-0"></div>
        
        <div className="max-w-[1200px] mx-auto px-4 relative z-10">
-          <div className="text-center mb-8">
-             <h2 className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
-                <Truck size={24} className="text-brand-500" /> Nossa Frota
+          <div className="text-center mb-12">
+             <h2 className="text-4xl md:text-5xl font-extrabold mb-2 flex items-center justify-center gap-3">
+                <Truck size={36} className="text-brand-500" /> Nossa Frota
              </h2>
-             <p className="text-gray-400 text-sm max-w-xl mx-auto">Veículos modernos e higienizados para o seu conforto.</p>
+             <p className="text-gray-400 text-lg max-w-xl mx-auto">Veículos modernos e higienizados para o seu conforto.</p>
           </div>
           
           {/* Grid mais denso (4 colunas em LG) para cards menores */}
@@ -28,7 +28,7 @@ export default function HomeFleet({ fleet }: { fleet: FleetItem[] }) {
              {fleet.map(item => (
                 <div 
                   key={item.id} 
-                  className="bg-dark-800 rounded-lg overflow-hidden shadow-lg border border-gray-700 group hover:border-brand-500 transition-colors cursor-pointer flex flex-col"
+                  className="bg-dark-800 rounded-none overflow-hidden border border-gray-700 group hover:border-brand-500 transition-colors cursor-pointer flex flex-col"
                   onClick={() => setSelectedItem(item)}
                 >
                    <div className="h-40 overflow-hidden relative shrink-0">

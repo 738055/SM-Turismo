@@ -34,15 +34,15 @@ const Navbar: React.FC = () => {
   const showSolidNav = scrolled || !isHome;
   
   const navClasses = showSolidNav 
-    ? 'bg-white/95 backdrop-blur-md border-b border-gray-100 py-3 shadow-sm' 
+    ? 'bg-white border-b border-gray-200 py-4 shadow-sm' 
     : 'bg-transparent py-5';
 
   const textClasses = showSolidNav 
-    ? 'text-gray-800 hover:text-brand-600' 
+    ? 'text-dark-900 hover:text-brand-500' 
     : 'text-white hover:text-gray-200';
 
   const iconClasses = showSolidNav 
-    ? 'text-gray-600 hover:bg-gray-100' 
+    ? 'text-dark-900 hover:bg-gray-100' 
     : 'text-white hover:bg-white/20';
 
   return (

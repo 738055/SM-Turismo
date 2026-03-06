@@ -8,7 +8,7 @@ export default function SearchHero() {
   const router = useRouter();
 
   return (
-    <section className="relative h-[600px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-dark-900">
+    <section className="relative h-screen flex items-center justify-center bg-dark-900">
         <div className="absolute inset-0 overflow-hidden">
           <video autoPlay loop muted playsInline poster="https://narpgktjriwmtubkijdw.supabase.co/storage/v1/object/public/easyvan-media/por-do-sol-nas-cataratas.jpeg" className="w-full h-full object-cover opacity-50">
             <source src="https://narpgktjriwmtubkijdw.supabase.co/storage/v1/object/public/easyvan-media/YTDown.com_YouTube_Media_Ri5xkVdfUrM_001_1080p.mp4" type="video/mp4" />
@@ -18,7 +18,7 @@ export default function SearchHero() {
 
         <div className="relative z-10 w-full max-w-[1200px] px-4 pt-16">
           <div className="text-center mb-10 text-white animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-md">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-md">
               Viva o extraordinário em <br/> <span className="text-brand-400">Foz do Iguaçu</span>
             </h1>
             <p className="text-lg md:text-xl font-medium text-gray-200">
@@ -26,11 +26,11 @@ export default function SearchHero() {
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-2xl p-4 md:p-6 max-w-4xl mx-auto transform translate-y-12 md:translate-y-20 border-b-4 border-brand-500">
+          <div className="bg-white rounded-none p-4 md:p-6 max-w-4xl mx-auto transform translate-y-12 md:translate-y-20">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                 <div className="md:col-span-5">
                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">O que você procura?</label>
-                   <div className="relative bg-gray-50 border border-gray-200 rounded p-3 flex items-center hover:border-brand-300 transition-colors">
+                   <div className="relative bg-gray-50 border border-gray-200 rounded-none p-3 flex items-center hover:border-brand-300 transition-colors">
                       <Search className="text-brand-500 mr-3" size={20} />
                       <input 
                         type="text" 
@@ -42,13 +42,13 @@ export default function SearchHero() {
                 </div>
                 <div className="md:col-span-4">
                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Quando?</label>
-                   <div className="relative bg-gray-50 border border-gray-200 rounded p-3 flex items-center hover:border-brand-300 transition-colors">
+                   <div className="relative bg-gray-50 border border-gray-200 rounded-none p-3 flex items-center hover:border-brand-300 transition-colors">
                       <Calendar className="text-brand-500 mr-3" size={20} />
                       <input type="text" placeholder="Escolha uma data" className="bg-transparent w-full focus:outline-none text-gray-700 font-medium" />
                    </div>
                 </div>
                 <div className="md:col-span-3">
-                   <button onClick={() => router.push('/products')} className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded shadow-lg hover:shadow-brand-500/30 transition-all uppercase tracking-wide text-sm">
+                   <button onClick={() => router.push('/products')} className="w-full bg-brand-500 hover:bg-brand-600 text-dark-900 font-bold py-3.5 rounded-none transition-all uppercase tracking-wide text-sm">
                      Buscar Agora
                    </button>
                 </div>

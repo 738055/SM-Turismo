@@ -110,12 +110,12 @@ export default function ProductDetailContent({ product }: { product: Product }) 
            </div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Coluna Esquerda: Mídia e Info */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-3 space-y-8">
              {/* Galeria */}
              <div className="space-y-2">
-                <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 shadow-sm">
+                <div className="relative aspect-video rounded-none overflow-hidden bg-gray-100">
                    <img 
                      src={gallery[activePhoto]} 
                      className="w-full h-full object-cover transition-opacity duration-300" 
@@ -128,7 +128,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                 {gallery.length > 1 && (
                   <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
                      {gallery.map((img, idx) => (
-                        <button key={idx} onClick={() => setActivePhoto(idx)} className={`w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${activePhoto === idx ? 'border-brand-500 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                        <button key={idx} onClick={() => setActivePhoto(idx)} className={`w-20 h-20 flex-shrink-0 rounded-none overflow-hidden border-2 transition-all ${activePhoto === idx ? 'border-brand-500 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                            <img src={img} className="w-full h-full object-cover" alt={`Thumbnail ${idx}`} />
                         </button>
                      ))}
@@ -138,12 +138,12 @@ export default function ProductDetailContent({ product }: { product: Product }) 
 
              {/* Icons Info */}
              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 text-center">
+                <div className="bg-gray-50 p-4 rounded-none border border-gray-100 text-center">
                    <Clock className="w-6 h-6 mx-auto text-brand-500 mb-2" />
                    <div className="text-xs text-gray-500 font-bold uppercase">Duração</div>
                    <div className="text-sm font-bold text-dark-900">{product.duration}</div>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 text-center">
+                <div className="bg-gray-50 p-4 rounded-none border border-gray-100 text-center">
                    <Users className="w-6 h-6 mx-auto text-brand-500 mb-2" />
                    <div className="text-xs text-gray-500 font-bold uppercase">Capacidade</div>
                    <div className="text-sm font-bold text-dark-900">{product.capacity}</div>
@@ -157,7 +157,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
              </section>
              
              {/* Inclusos */}
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 p-6 rounded-xl border border-gray-100">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 p-6 rounded-none border border-gray-100">
                {product.amenities && product.amenities.length > 0 && (
                  <div>
                    <h3 className="font-bold text-dark-900 mb-3 flex items-center gap-2"><Check size={18} className="text-green-500"/> O que está incluso</h3>
@@ -187,7 +187,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
 
           {/* Coluna Direita: Sticky Checkout Widget */}
           <aside className="lg:col-span-1">
-             <div className="sticky top-28 bg-white border border-gray-200 rounded-xl shadow-2xl p-6 overflow-hidden">
+             <div className="sticky top-28 bg-white border-2 border-dark-900 rounded-none p-6 overflow-hidden">
                 <div className="mb-6 border-b border-gray-100 pb-4">
                    <p className="text-gray-500 text-sm mb-1">{t('from')}</p>
                    {product.promo_price ? (
@@ -212,10 +212,10 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                         <p className="font-bold text-sm text-dark-900">{variant.label}</p>
                         <p className="text-xs text-gray-500">R$ {variant.price.toFixed(2)}</p>
                       </div>
-                      <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-1 border border-gray-200">
+                      <div className="flex items-center gap-3 bg-gray-50 rounded-none p-1 border border-gray-200">
                         <button 
                           onClick={() => updateQuantity(idx, -1)} 
-                          className={`w-8 h-8 flex items-center justify-center rounded bg-white shadow-sm transition-colors ${variant.quantity <= 0 ? 'text-gray-300' : 'text-brand-600 hover:bg-gray-50'}`}
+                          className={`w-8 h-8 flex items-center justify-center rounded-none bg-white shadow-sm transition-colors ${variant.quantity <= 0 ? 'text-gray-300' : 'text-brand-600 hover:bg-gray-50'}`}
                           disabled={variant.quantity <= 0}
                         >
                           <Minus size={16} />
@@ -223,7 +223,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                         <span className="w-4 text-center font-bold text-dark-900">{variant.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(idx, 1)} 
-                          className="w-8 h-8 flex items-center justify-center rounded bg-white shadow-sm text-brand-600 hover:bg-gray-50"
+                          className="w-8 h-8 flex items-center justify-center rounded-none bg-white shadow-sm text-brand-600 hover:bg-gray-50"
                         >
                           <Plus size={16} />
                         </button>
@@ -233,7 +233,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                 </div>
 
                 {/* Resumo do Total */}
-                <div className="bg-brand-50 p-4 rounded-lg mb-6 flex justify-between items-center">
+                <div className="bg-brand-50 p-4 rounded-none mb-6 flex justify-between items-center">
                   <span className="text-sm font-bold text-brand-900">Total Previsto:</span>
                   <span className="text-xl font-extrabold text-brand-600">R$ {currentTotal.toFixed(2)}</span>
                 </div>
@@ -243,14 +243,14 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                   <button 
                     onClick={() => handleAddToCart(true)} 
                     disabled={!hasItemsSelected} 
-                    className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg text-lg uppercase tracking-wide transition-all shadow-lg flex items-center justify-center gap-2"
+                    className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-dark-900 font-bold py-4 rounded-none text-xl uppercase tracking-wide transition-all flex items-center justify-center gap-2"
                   >
                     Comprar Agora
                   </button>
                   <button 
                     onClick={() => handleAddToCart(false)} 
                     disabled={!hasItemsSelected} 
-                    className="w-full bg-white border-2 border-brand-500 text-brand-600 hover:bg-brand-50 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-white border-2 border-brand-500 text-brand-600 hover:bg-brand-50 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed font-bold py-3 rounded-none transition-all flex items-center justify-center gap-2"
                   >
                     <ShoppingCart size={18} /> Adicionar e Continuar
                   </button>

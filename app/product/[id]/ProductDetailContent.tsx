@@ -1,26 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Star, Clock, Users, MapPin, ShieldCheck, Camera, Check, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
-import { Product, CartItemSelection } from '@/lib/types';
+import { Product } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
 export default function ProductDetailContent({ product }: { product: Product }) {
-  const { addToCart } = useCart();
   const { t } = useLanguage();
   const router = useRouter();
   
   const [activePhoto, setActivePhoto] = useState(0);
   const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image_url];
+  const [selectedDate, setSelectedDate] = useState('');
 
   // Estado para gerenciar quantidades das variantes
   // Se não tiver variantes no banco, cria uma "Padrão" usando o preço base
   const defaultVariants = product.price_variants && product.price_variants.length > 0 
     ? product.price_variants.map(v => ({ ...v, quantity: 0 }))
-    : [{ label: 'Adulto / Unidade', price: product.promo_price || product.price, quantity: 1 }];
+    : [{ label: 'Adulto / Unidade', price: product.promo_price || product.price, quantity: 0 }];
 
   const [selections, setSelections] = useState(defaultVariants);
 
@@ -38,21 +37,37 @@ export default function ProductDetailContent({ product }: { product: Product }) 
   const currentTotal = selections.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
   const hasItemsSelected = selections.some(s => s.quantity > 0);
 
-  const handleAddToCart = (redirect: boolean) => {
-    // Filtra apenas o que tem quantidade > 0
-    const finalSelections: CartItemSelection[] = selections
-      .filter(s => s.quantity > 0)
-      .map(s => ({ label: s.label, price: s.price, quantity: s.quantity }));
-
-    addToCart(product, finalSelections);
-    
-    if (redirect) {
-      router.push('/cart');
-    } else {
-      // Reset ou Feedback visual
-      alert('Adicionado ao carrinho! Você pode continuar navegando.');
-      setSelections(prev => prev.map(s => ({ ...s, quantity: 0 }))); // Opcional: limpa seleção
+  const handleWhatsAppDirect = () => {
+    if (!selectedDate) {
+      alert('Por favor, escolha a data do passeio.');
+      return;
     }
+
+    if (!hasItemsSelected) {
+        alert('Por favor, selecione ao menos um ingresso.');
+        return;
+    }
+
+    const formattedDate = new Date(selectedDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+    const details = selections
+      .filter(s => s.quantity > 0)
+      .map(s => `- ${s.quantity}x ${s.label} (R$ ${s.price.toFixed(2).replace('.', ',')})`)
+      .join('\n');
+
+    const formattedTotal = currentTotal.toFixed(2).replace('.', ',');
+
+    const message = `Olá, Foz Turismo SM! Gostaria de solicitar uma reserva.
+Passeio: ${product.title}
+Data Escolhida: ${formattedDate}
+Detalhes:
+${details}
+Valor Total Previsto: R$ ${formattedTotal}`;
+
+    const whatsappUrl = `https://wa.me/5545999999999?text=${encodeURIComponent(message)}`;
+    
+    // Abrir em nova aba
+    window.open(whatsappUrl, '_blank');
   };
 
   // --- SEO: SCHEMA.ORG JSON-LD ---
@@ -203,6 +218,17 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                    )}
                 </div>
 
+                {/* SELETOR DE DATA */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">Escolha a data:</h3>
+                  <input 
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                  />
+                </div>
+
                 {/* SELETOR DE QUANTIDADE (ADULTO / CRIANÇA) */}
                 <div className="space-y-4 mb-6">
                   <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">Selecione os ingressos:</h3>
@@ -238,21 +264,14 @@ export default function ProductDetailContent({ product }: { product: Product }) 
                   <span className="text-xl font-extrabold text-brand-600">R$ {currentTotal.toFixed(2)}</span>
                 </div>
 
-                {/* Botões de Ação */}
+                {/* Botão de Ação */}
                 <div className="space-y-3">
                   <button 
-                    onClick={() => handleAddToCart(true)} 
-                    disabled={!hasItemsSelected} 
-                    className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-dark-900 font-bold py-4 rounded-none text-xl uppercase tracking-wide transition-all flex items-center justify-center gap-2"
+                    onClick={handleWhatsAppDirect}
+                    disabled={!hasItemsSelected}
+                    className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-dark-900 font-bold py-4 rounded-none text-lg uppercase tracking-wide transition-all flex items-center justify-center gap-2"
                   >
-                    Comprar Agora
-                  </button>
-                  <button 
-                    onClick={() => handleAddToCart(false)} 
-                    disabled={!hasItemsSelected} 
-                    className="w-full bg-white border-2 border-brand-500 text-brand-600 hover:bg-brand-50 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed font-bold py-3 rounded-none transition-all flex items-center justify-center gap-2"
-                  >
-                    <ShoppingCart size={18} /> Adicionar e Continuar
+                    Reservar via WhatsApp
                   </button>
                 </div>
 

@@ -321,15 +321,64 @@ export default function AdminProducts() {
              </div>
           )}
           {currentStep === 5 && (
-             <div className="space-y-4">
-                <label className="block font-bold">Capa</label>
-                <input type="file" onChange={e => handleImageUpload(e, false)} />
-                {form.image_url && <img src={form.image_url} className="h-32 object-cover rounded" />}
+             <div className="space-y-6">
+                {/* IMAGEM DE CAPA */}
+                <div>
+                  <label className="block font-bold text-gray-700 mb-2">Imagem de Capa</label>
+                  <div className="flex items-center gap-4">
+                     <input 
+                       type="file" 
+                       onChange={e => handleImageUpload(e, false)} 
+                       className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"
+                     />
+                     {uploading && <span className="text-sm text-gray-500">Enviando...</span>}
+                  </div>
+                  
+                  {form.image_url && (
+                    <div className="relative inline-block mt-4 group">
+                      <img src={form.image_url} className="h-40 w-auto object-cover rounded-xl border border-gray-200 shadow-sm" alt="Capa" />
+                      <button 
+                        onClick={() => setForm({ ...form, image_url: '' })}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors z-10"
+                        title="Remover Capa"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
                 
-                <label className="block font-bold mt-4">Galeria</label>
-                <input type="file" onChange={e => handleImageUpload(e, true)} />
-                <div className="flex gap-2 mt-2">
-                   {form.gallery?.map((url, i) => <img key={i} src={url} className="h-16 w-16 object-cover rounded" />)}
+                <hr className="border-gray-100" />
+
+                {/* GALERIA */}
+                <div>
+                  <label className="block font-bold text-gray-700 mb-2">Galeria de Fotos</label>
+                  <div className="flex items-center gap-4">
+                     <input 
+                       type="file" 
+                       onChange={e => handleImageUpload(e, true)} 
+                       className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"
+                     />
+                     {uploading && <span className="text-sm text-gray-500">Enviando...</span>}
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 mt-4">
+                     {form.gallery?.map((url, i) => (
+                       <div key={i} className="relative inline-block group">
+                         <img src={url} className="h-24 w-24 object-cover rounded-xl border border-gray-200 shadow-sm" alt={`Foto ${i}`} />
+                         <button 
+                           onClick={() => {
+                             const newGallery = form.gallery?.filter((_, idx) => idx !== i);
+                             setForm({ ...form, gallery: newGallery });
+                           }}
+                           className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors z-10 opacity-0 group-hover:opacity-100"
+                           title="Remover Foto"
+                         >
+                           <X size={14} />
+                         </button>
+                       </div>
+                     ))}
+                  </div>
                 </div>
              </div>
           )}

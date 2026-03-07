@@ -23,20 +23,15 @@ const DESTINATION_ZONES = [
   'Centro Puerto Iguazú — AR',
 ];
 
-interface SearchParams {
-  origin?: string;
-  destination?: string;
-  trip?: 'oneway' | 'roundtrip';
-}
-
 export default async function TransfersPage({
   searchParams,
 }: {
-  searchParams?: SearchParams;
+  searchParams?: Promise<{ origin?: string; destination?: string; trip?: string }>;
 }) {
-  const origin = searchParams?.origin ?? '';
-  const destination = searchParams?.destination ?? '';
-  const isRoundtrip = searchParams?.trip === 'roundtrip';
+  const params = await searchParams;
+  const origin = params?.origin ?? '';
+  const destination = params?.destination ?? '';
+  const isRoundtrip = params?.trip === 'roundtrip';
 
   // Busca todos os transfers — filtragem por rota ocorre via JS
   // (Supabase JSONB nested array query via JS client requer filter complexo;

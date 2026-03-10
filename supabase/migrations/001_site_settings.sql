@@ -63,11 +63,11 @@ INSERT INTO public.site_settings (
   google_pixel_id
 ) VALUES (
   'Foz Turismo SM',
-  '00.000.000/0001-00',
+  '45.379.023/0001-97',
   'Av. Brasil, 1234 - Centro, Foz do Iguaçu - PR, 85851-000',
-  '5545999999999',
-  'contato@foztourismosm.com.br',
-  '(45) 3025-0000',
+  '5545999856427',
+  'elianesantos_moraes@hotmail.com',
+  '(45) 99985-6427',
   'https://instagram.com/foztourismosm',
   'https://facebook.com/foztourismosm',
   'Foz Turismo SM - Sua Viagem Começa Aqui',

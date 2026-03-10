@@ -64,7 +64,7 @@ export default function FAQ() {
            <h3 className="font-bold text-dark-900 mb-2">Ainda tem dúvidas?</h3>
            <p className="text-gray-600 mb-6">Nossa equipe de especialistas está pronta para te ajudar no WhatsApp.</p>
            <a 
-             href="https://wa.me/5545999999999" 
+             href="https://wa.me/5545999856427" 
              target="_blank"
              rel="noreferrer"
              className="inline-flex items-center justify-center bg-[#25D366] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#128C7E] transition-colors shadow-lg"

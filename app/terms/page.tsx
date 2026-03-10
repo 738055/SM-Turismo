@@ -44,7 +44,7 @@ export default function Terms() {
 
           <div className="mt-12 p-6 bg-brand-50 border border-brand-100 rounded-lg text-sm text-gray-500">
              <p><strong>Foz Turismo SM Viagens e Turismo LTDA</strong></p>
-             <p>CNPJ: 00.000.000/0001-00</p>
+             <p>CNPJ: 45.379.023/0001-97</p>
              <p>Av. Brasil, 1234 - Foz do Iguaçu, PR</p>
              <p>Atualizado em: Janeiro de 2024</p>
           </div>

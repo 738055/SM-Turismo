@@ -10,7 +10,7 @@ export default function Contact() {
 
   const address = settings?.address || 'Av. Brasil, 1234 - Centro, Foz do Iguaçu - PR, 85851-000';
   const phone = settings?.contact_phone || '(45) 3025-0000';
-  const whatsapp = settings?.whatsapp_number || '5545999999999';
+  const whatsapp = settings?.whatsapp_number || '5545999856427';
   const contactEmail = settings?.contact_email || '';
 
   return (

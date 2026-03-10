@@ -33,7 +33,7 @@ export default function Cart() {
       return;
     }
 
-    const companyPhone = settings?.whatsapp_number || "5545999999999";
+    const companyPhone = settings?.whatsapp_number || "5545999856427";
     
     let message = `🌟 *NOVA SOLICITAÇÃO DE RESERVA* 🌟%0A%0A`;
     message += `👤 *Titular:* ${formData.name}%0A`;

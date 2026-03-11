@@ -131,13 +131,16 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
     control, name: 'itinerary',
   });
 
+  const { fields: pricingTiersFields, append: appendPricingTier, remove: removePricingTier } = useFieldArray({
+    control, name: 'pricing_tiers'
+  });
+
   const gallery = watch('gallery') ?? [];
   const imageUrl = watch('image_url');
   const languages = watch('languages');
   const amenities = watch('amenities');
   const excludes = watch('excludes');
   const pricingType = watch('pricing_type');
-  const pricingTiers = watch('pricing_tiers') ?? [];
 
   const handleNext = async () => {
     const fields = STEP_FIELDS[currentStep];
@@ -435,22 +438,22 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
                   <div className="flex justify-between items-center mb-3">
                     <label className="text-sm font-bold text-gray-700">Faixas de Preço</label>
                     <button type="button"
-                      onClick={() => setValue('pricing_tiers', [...pricingTiers, { label: '', min_pax: 1, max_pax: 4, price: 0 }])}
+                      onClick={() => appendPricingTier({ label: '', min_pax: 1, max_pax: 4, price: 0 })}
                       className="text-xs bg-brand-50 text-brand-700 px-3 py-1.5 rounded font-bold border border-brand-100 flex items-center gap-1 hover:bg-brand-100">
                       <Plus size={12} /> Add Faixa
                     </button>
                   </div>
                   <div className="space-y-3">
-                    {pricingTiers.map((tier, i) => (
-                      <div key={i} className="flex gap-2 items-center p-3 bg-gray-50 rounded-lg border text-sm">
-                        <input className="border p-2 rounded w-28" placeholder="Ex: Sedan" value={tier.label ?? ''} onChange={e => { const nt = [...pricingTiers]; nt[i].label = e.target.value; setValue('pricing_tiers', nt); }} />
+                    {pricingTiersFields.map((field, i) => (
+                      <div key={field.id} className="flex gap-2 items-center p-3 bg-gray-50 rounded-lg border text-sm">
+                        <input {...register(`pricing_tiers.${i}.label`)} className="border p-2 rounded w-28" placeholder="Ex: Sedan" />
                         <span className="text-gray-500">De</span>
-                        <input type="number" className="border p-2 rounded w-16" value={tier.min_pax} onChange={e => { const nt = [...pricingTiers]; nt[i].min_pax = Number(e.target.value); setValue('pricing_tiers', nt); }} />
+                        <input type="number" {...register(`pricing_tiers.${i}.min_pax`, { setValueAs: v => v ? parseInt(v, 10) : 0 })} className="border p-2 rounded w-16" />
                         <span className="text-gray-500">a</span>
-                        <input type="number" className="border p-2 rounded w-16" value={tier.max_pax} onChange={e => { const nt = [...pricingTiers]; nt[i].max_pax = Number(e.target.value); setValue('pricing_tiers', nt); }} />
+                        <input type="number" {...register(`pricing_tiers.${i}.max_pax`, { setValueAs: v => v ? parseInt(v, 10) : 0 })} className="border p-2 rounded w-16" />
                         <span className="text-gray-500">pax — R$</span>
-                        <input type="number" className="border p-2 rounded w-24" value={tier.price} onChange={e => { const nt = [...pricingTiers]; nt[i].price = Number(e.target.value); setValue('pricing_tiers', nt); }} />
-                        <button type="button" onClick={() => setValue('pricing_tiers', pricingTiers.filter((_, idx) => idx !== i))} className="text-red-500"><X size={16} /></button>
+                        <input type="number" {...register(`pricing_tiers.${i}.price`, { setValueAs: v => v ? parseFloat(v) : 0 })} className="border p-2 rounded w-24" />
+                        <button type="button" onClick={() => removePricingTier(i)} className="text-red-500"><X size={16} /></button>
                       </div>
                     ))}
                   </div>

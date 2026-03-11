@@ -36,7 +36,7 @@ const PRODUCT_TYPES: { type: ProductType; icon: React.ReactNode; label: string; 
 export default function ProductFormWrapper({ editingProduct, onClose, onSaved }: Props) {
   // Se editando, pular a seleção de tipo
   const [selectedType, setSelectedType] = useState<ProductType | null>(
-    editingProduct?.product_type ?? null
+    editingProduct ? editingProduct.product_type ?? 'tour' : null
   );
 
   const handleClose = () => {

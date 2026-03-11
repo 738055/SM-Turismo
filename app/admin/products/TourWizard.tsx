@@ -209,7 +209,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
       languages: values.languages,
       is_free_cancellation: values.is_free_cancellation,
       price: values.price,
-      promo_price: values.promo_price ?? undefined,
+      promo_price: (values.promo_price ?? null) as any,
       pricing_type: values.pricing_type,
       pricing_tiers: values.pricing_tiers,
       amenities: values.amenities,
@@ -227,16 +227,15 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
       },
     };
 
-    try {
-      if (editingProduct) {
-        await supabase.from('products').update(payload).eq('id', editingProduct.id);
-      } else {
-        await supabase.from('products').insert([payload]);
-      }
-      onSaved();
-    } catch (e: any) {
-      alert('Erro ao salvar: ' + e.message);
+    const { error } = editingProduct
+      ? await supabase.from('products').update(payload).eq('id', editingProduct.id)
+      : await supabase.from('products').insert([payload]);
+
+    if (error) {
+      setSubmitError(`Erro ao salvar: ${error.message}`);
+      return;
     }
+    onSaved();
   };
 
   const totalSteps = 5;

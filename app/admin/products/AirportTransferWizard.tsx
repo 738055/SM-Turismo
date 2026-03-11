@@ -237,16 +237,15 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
       },
     };
 
-    try {
-      if (editingProduct) {
-        await supabase.from('products').update(payload).eq('id', editingProduct.id);
-      } else {
-        await supabase.from('products').insert([payload]);
-      }
-      onSaved();
-    } catch (e: any) {
-      alert('Erro ao salvar: ' + e.message);
+    const { error } = editingProduct
+      ? await supabase.from('products').update(payload).eq('id', editingProduct.id)
+      : await supabase.from('products').insert([payload]);
+
+    if (error) {
+      setSubmitError(`Erro ao salvar: ${error.message}`);
+      return;
     }
+    onSaved();
   };
 
   const totalSteps = 4;

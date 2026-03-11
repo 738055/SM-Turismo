@@ -8,7 +8,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'dynamic-media-cdn.tripadvisor.com' },
       { protocol: 'https', hostname: 'media.istockphoto.com' },
       { protocol: 'https', hostname: 'upload.wikimedia.org' }, // <--- A vírgula que faltava estava aqui
-      { protocol: 'https', hostname: 'narpgktjriwmtubkijdw.supabase.co' }
+      { protocol: 'https', hostname: '**.supabase.co' }
     ],
   },
 };

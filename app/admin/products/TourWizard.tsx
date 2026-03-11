@@ -25,7 +25,7 @@ const tourSchema = z.object({
   languages: z.array(z.string()).min(1, 'Informe ao menos um idioma'),
   is_free_cancellation: z.boolean(),
   price: z.number().min(0.01, 'Preço deve ser maior que zero'),
-  promo_price: z.number().optional(),
+  promo_price: z.number().nullable().optional(),
   pricing_type: z.enum(['person', 'vehicle']),
   pricing_tiers: z.array(z.object({
     label: z.string().optional(),
@@ -106,7 +106,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
     languages: editingProduct?.languages ?? [],
     is_free_cancellation: editingProduct?.is_free_cancellation ?? false,
     price: editingProduct?.price ?? 0,
-    promo_price: editingProduct?.promo_price,
+    promo_price: editingProduct?.promo_price ?? undefined,
     pricing_type: editingProduct?.pricing_type ?? 'person',
     pricing_tiers: editingProduct?.pricing_tiers ?? [],
     amenities: editingProduct?.amenities ?? [],

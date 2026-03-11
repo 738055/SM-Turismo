@@ -267,7 +267,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
         <button onClick={onClose}><X size={24} /></button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit, onSubmitError)}>
+      <form onSubmit={e => e.preventDefault()}>
         <div className="p-8 min-h-[420px]">
 
           {/* PASSO 1: Dados Básicos */}
@@ -533,7 +533,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
               Próximo
             </button>
           ) : (
-            <button type="submit"
+            <button type="button" onClick={handleSubmit(onSubmit, onSubmitError)}
               className="px-8 py-2.5 bg-green-600 text-white rounded-lg font-bold text-sm hover:bg-green-700 transition-colors">
               Salvar Transfer
             </button>

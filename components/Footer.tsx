@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
               <img 
                 src="/logo.png" 
                 alt="Foz Turismo SM Logo" 
-                className="h-14 w-auto object-contain bg-white p-2 rounded-sm"
+                className="h-20 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm mb-6">

@@ -104,7 +104,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
     location: editingProduct?.location ?? '',
     duration: editingProduct?.duration ?? '',
     languages: editingProduct?.languages ?? [],
-    is_free_cancellation: editingProduct?.metadata?.is_free_cancellation ?? false,
+    is_free_cancellation: editingProduct?.is_free_cancellation ?? editingProduct?.metadata?.is_free_cancellation ?? false,
     price: editingProduct?.price ?? 0,
     promo_price: editingProduct?.promo_price ?? undefined,
     pricing_type: editingProduct?.pricing_type ?? 'person',
@@ -207,6 +207,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
       location: values.location,
       duration: values.duration,
       languages: values.languages,
+      is_free_cancellation: values.is_free_cancellation,
       price: values.price,
       promo_price: (values.promo_price ?? null) as any,
       pricing_type: values.pricing_type,
@@ -219,7 +220,6 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
       tags: values.tags ?? [],
       is_featured: values.is_featured ?? false,
       metadata: {
-        is_free_cancellation: values.is_free_cancellation,
         tourDetails: {
           meetingPoint: values.meetingPoint,
           whatToBring: values.whatToBring ?? [],

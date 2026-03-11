@@ -150,14 +150,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isRoundtrip }) => {
 
       {/* Imagem — next/image para otimização de LCP */}
       <div className="relative aspect-[4/5] w-full overflow-hidden">
-        <Image
-          src={product.image_url}
-          alt={product.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          priority={product.is_featured}
-        />
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            priority={product.is_featured}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm font-bold">
+            Sem imagem
+          </div>
+        )}
 
         {/* Badge de categoria */}
         <div className="absolute top-3 left-3 z-10">
@@ -167,7 +173,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isRoundtrip }) => {
         </div>
 
         {/* Badge de cancelamento gratuito */}
-        {product.metadata?.is_free_cancellation && (
+        {(product.is_free_cancellation || product.metadata?.is_free_cancellation) && (
           <div className="absolute top-3 right-3 z-10">
             <span className="bg-green-500 text-white text-[9px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
               Canc. Grátis

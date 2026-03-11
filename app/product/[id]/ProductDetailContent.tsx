@@ -14,7 +14,7 @@ export default function ProductDetailContent({ product }: { product: Product }) 
   const router = useRouter();
   
   const [activePhoto, setActivePhoto] = useState(0);
-  const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image_url];
+  const gallery = [product.image_url, ...(product.gallery ?? [])].filter((url, i, arr) => url && arr.indexOf(url) === i);
   const [selectedDate, setSelectedDate] = useState('');
 
   // Estado para gerenciar quantidades das variantes

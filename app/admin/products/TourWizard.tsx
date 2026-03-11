@@ -87,6 +87,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
   const [uploading, setUploading] = useState(false);
   const [translating, setTranslating] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   React.useEffect(() => {
     supabase.from('categories').select('*').order('name').then(({ data }) => {
@@ -165,8 +166,8 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
     setUploading(true);
     const url = await uploadImage(e.target.files[0]);
     if (url) {
-      if (isGallery) setValue('gallery', [...gallery, url]);
-      else setValue('image_url', url);
+      if (isGallery) setValue('gallery', [...gallery, url], { shouldValidate: true, shouldDirty: true });
+      else setValue('image_url', url, { shouldValidate: true, shouldDirty: true });
     }
     setUploading(false);
     e.target.value = '';
@@ -177,7 +178,20 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
     setValue('languages', current.includes(lang) ? current.filter(l => l !== lang) : [...current, lang]);
   };
 
+  const onSubmitError = (errs: any) => {
+    const errorFields = Object.keys(errs) as (keyof TourFormValues)[];
+    for (const [step, fields] of Object.entries(STEP_FIELDS)) {
+      if (fields.some((f: keyof TourFormValues) => errorFields.includes(f))) {
+        setCurrentStep(Number(step));
+        setSubmitError(`Corrija os campos obrigatórios no passo ${step} antes de salvar.`);
+        return;
+      }
+    }
+    setSubmitError('Preencha todos os campos obrigatórios antes de salvar.');
+  };
+
   const onSubmit = async (values: TourFormValues) => {
+    setSubmitError(null);
     const payload: Partial<Product> = {
       product_type: productType,
       title: values.title,
@@ -237,7 +251,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
         <button onClick={onClose}><X size={24} /></button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <div className="p-8 min-h-[420px]">
 
           {/* PASSO 1: Dados Básicos */}
@@ -481,7 +495,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
                 {imageUrl && (
                   <div className="relative inline-block mt-4 group">
                     <img src={imageUrl} className="h-40 w-auto object-cover rounded-xl border shadow-sm" alt="Capa" />
-                    <button type="button" onClick={() => setValue('image_url', '')}
+                    <button type="button" onClick={() => setValue('image_url', '', { shouldValidate: true, shouldDirty: true })}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 z-10">
                       <X size={14} />
                     </button>
@@ -499,7 +513,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
                   {gallery.map((url, i) => (
                     <div key={i} className="relative group">
                       <img src={url} className="h-24 w-24 object-cover rounded-xl border shadow-sm" alt={`Foto ${i + 1}`} />
-                      <button type="button" onClick={() => setValue('gallery', gallery.filter((_, idx) => idx !== i))}
+                      <button type="button" onClick={() => setValue('gallery', gallery.filter((_, idx) => idx !== i), { shouldValidate: true, shouldDirty: true })}
                         className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                         <X size={14} />
                       </button>
@@ -510,6 +524,12 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
             </div>
           )}
         </div>
+
+        {submitError && (
+          <div className="mx-6 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-medium">
+            {submitError}
+          </div>
+        )}
 
         <div className="p-6 bg-gray-50 border-t flex justify-between items-center">
           <button type="button" disabled={currentStep === 1} onClick={() => setCurrentStep(s => s - 1)}

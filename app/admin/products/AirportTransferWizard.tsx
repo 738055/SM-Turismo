@@ -97,6 +97,7 @@ interface Props {
 export default function AirportTransferWizard({ editingProduct, onClose, onSaved }: Props) {
   const [currentStep, setCurrentStep] = useState(1);
   const [uploading, setUploading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const existingTransfer = editingProduct?.metadata?.transferDetails;
   const existingRoute = existingTransfer?.routes?.[0];
@@ -147,8 +148,8 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
     setUploading(true);
     const url = await uploadImage(e.target.files[0]);
     if (url) {
-      if (isGallery) setValue('gallery', [...gallery, url]);
-      else setValue('image_url', url);
+      if (isGallery) setValue('gallery', [...gallery, url], { shouldValidate: true, shouldDirty: true });
+      else setValue('image_url', url, { shouldValidate: true, shouldDirty: true });
     }
     setUploading(false);
     e.target.value = '';
@@ -166,7 +167,20 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
     });
   };
 
+  const onSubmitError = (errs: any) => {
+    const errorFields = Object.keys(errs) as (keyof TransferFormValues)[];
+    for (const [step, fields] of Object.entries(STEP_FIELDS)) {
+      if (fields.some((f: keyof TransferFormValues) => errorFields.includes(f))) {
+        setCurrentStep(Number(step));
+        setSubmitError(`Corrija os campos obrigatórios no passo ${step} antes de salvar.`);
+        return;
+      }
+    }
+    setSubmitError('Preencha todos os campos obrigatórios antes de salvar.');
+  };
+
   const onSubmit = async (values: TransferFormValues) => {
+    setSubmitError(null);
     const destName = values.destinationName === 'Personalizado'
       ? (values.destinationCustom ?? values.destinationName)
       : values.destinationName;
@@ -249,7 +263,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
         <button onClick={onClose}><X size={24} /></button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <div className="p-8 min-h-[420px]">
 
           {/* PASSO 1: Dados Básicos */}
@@ -468,7 +482,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
                 {imageUrl && (
                   <div className="relative inline-block mt-4 group">
                     <img src={imageUrl} className="h-40 w-auto object-cover rounded-xl border shadow-sm" alt="Capa" />
-                    <button type="button" onClick={() => setValue('image_url', '')}
+                    <button type="button" onClick={() => setValue('image_url', '', { shouldValidate: true, shouldDirty: true })}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 z-10">
                       <X size={14} />
                     </button>
@@ -486,7 +500,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
                   {gallery.map((url, i) => (
                     <div key={i} className="relative group">
                       <img src={url} className="h-24 w-24 object-cover rounded-xl border shadow-sm" alt={`Foto ${i + 1}`} />
-                      <button type="button" onClick={() => setValue('gallery', gallery.filter((_, idx) => idx !== i))}
+                      <button type="button" onClick={() => setValue('gallery', gallery.filter((_, idx) => idx !== i), { shouldValidate: true, shouldDirty: true })}
                         className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                         <X size={14} />
                       </button>
@@ -497,6 +511,12 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
             </div>
           )}
         </div>
+
+        {submitError && (
+          <div className="mx-6 mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-medium">
+            {submitError}
+          </div>
+        )}
 
         <div className="p-6 bg-gray-50 border-t flex justify-between items-center">
           <button type="button" disabled={currentStep === 1} onClick={() => setCurrentStep(s => s - 1)}

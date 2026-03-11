@@ -108,7 +108,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
     category: editingProduct?.category ?? 'transfer',
     city: editingProduct?.city ?? 'Foz do Iguaçu - BR',
     description: editingProduct?.description ?? '',
-    is_free_cancellation: editingProduct?.is_free_cancellation ?? false,
+    is_free_cancellation: editingProduct?.metadata?.is_free_cancellation ?? false,
     image_url: editingProduct?.image_url ?? '',
     gallery: editingProduct?.gallery ?? [],
     originCode: existingRoute?.origin.code ?? '',
@@ -218,7 +218,6 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
       description: values.description,
       full_description: values.description,
       location: `${values.originCode} → ${destName}`,
-      is_free_cancellation: values.is_free_cancellation,
       price: basePrice,
       pricing_type: 'vehicle',
       image_url: values.image_url,
@@ -228,6 +227,7 @@ export default function AirportTransferWizard({ editingProduct, onClose, onSaved
       itinerary: [],
       tags: ['transfer', 'aeroporto'],
       metadata: {
+        is_free_cancellation: values.is_free_cancellation,
         transferDetails: {
           routes: [route],
           vehicleConfigs: values.vehicleConfigs,

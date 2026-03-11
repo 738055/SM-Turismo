@@ -167,7 +167,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isRoundtrip }) => {
         </div>
 
         {/* Badge de cancelamento gratuito */}
-        {product.is_free_cancellation && (
+        {product.metadata?.is_free_cancellation && (
           <div className="absolute top-3 right-3 z-10">
             <span className="bg-green-500 text-white text-[9px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
               Canc. Grátis

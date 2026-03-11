@@ -45,6 +45,7 @@ export interface TourDetails {
 }
 
 export interface ProductMetadata {
+  is_free_cancellation?: boolean;
   transferDetails?: TransferDetails;
   tourDetails?: TourDetails;
 }

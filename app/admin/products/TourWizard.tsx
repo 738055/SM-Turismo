@@ -180,14 +180,19 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
 
   const onSubmitError = (errs: any) => {
     const errorFields = Object.keys(errs) as (keyof TourFormValues)[];
+    const details = errorFields.map(f => {
+      const msg = errs[f]?.message || errs[f]?.root?.message || 'inválido';
+      return `${f}: ${msg}`;
+    }).join(' | ');
+    console.log('Validation errors:', errs);
     for (const [step, fields] of Object.entries(STEP_FIELDS)) {
       if (fields.some((f: keyof TourFormValues) => errorFields.includes(f))) {
         setCurrentStep(Number(step));
-        setSubmitError(`Corrija os campos obrigatórios no passo ${step} antes de salvar.`);
+        setSubmitError(`Erro no passo ${step}: ${details}`);
         return;
       }
     }
-    setSubmitError('Preencha todos os campos obrigatórios antes de salvar.');
+    setSubmitError(`Campos com erro: ${details}`);
   };
 
   const onSubmit = async (values: TourFormValues) => {

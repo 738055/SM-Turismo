@@ -25,7 +25,7 @@ const tourSchema = z.object({
   languages: z.array(z.string()).min(1, 'Informe ao menos um idioma'),
   is_free_cancellation: z.boolean(),
   price: z.number().min(0.01, 'Preço deve ser maior que zero'),
-  promo_price: z.number().nullable().optional(),
+  promo_price: z.number().optional(),
   pricing_type: z.enum(['person', 'vehicle']),
   pricing_tiers: z.array(z.object({
     label: z.string().optional(),
@@ -209,7 +209,7 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
       languages: values.languages,
       is_free_cancellation: values.is_free_cancellation,
       price: values.price,
-      promo_price: values.promo_price,
+      promo_price: values.promo_price ?? undefined,
       pricing_type: values.pricing_type,
       pricing_tiers: values.pricing_tiers,
       amenities: values.amenities,
@@ -435,8 +435,11 @@ export default function TourWizard({ productType, editingProduct, onClose, onSav
                     type="text"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none"
                     placeholder="R$ 0,00 (opcional)"
-                    value={watch('promo_price') ? formatBRL(watch('promo_price') ?? 0) : ''}
-                    onChange={e => setValue('promo_price', parseCurrencyInput(e.target.value) || undefined)}
+                    value={watch('promo_price') != null && watch('promo_price')! > 0 ? formatBRL(watch('promo_price')!) : ''}
+                    onChange={e => {
+                      const v = parseCurrencyInput(e.target.value);
+                      setValue('promo_price', v > 0 ? v : undefined);
+                    }}
                   />
                 </div>
               </div>

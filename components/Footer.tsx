@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
               />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm mb-6">
-              Apaixonados por Foz do Iguaçu, oferecemos um serviço de receptivo completo, com vans confortáveis, guias experientes e um atendimento que faz você se sentir em casa.
+              Apaixonados por Foz do Iguaçu, oferecemos um serviço de receptivo completo, com carros confortáveis, guias experientes e um atendimento que faz você se sentir em casa.
             </p>
             <div className="flex gap-4">
               <a href={facebookUrl} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:bg-brand-500 hover:text-dark-900 transition-all"><Facebook size={20} /></a>
